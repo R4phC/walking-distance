@@ -1,0 +1,110 @@
+<html>
+<head><title>Welcome to Walking Distance!</title>      
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/normalize.css') }}">
+	<link href='http://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+	<script type="text/javascript">
+ 			function unhide(divID) {
+	 			var item = document.getElementById(divID);
+	 			var a = document.getElementById('knownactives');
+	 			var b = document.getElementById('activeideas');
+	 			a.className='hidden';
+	 			b.className='hidden';
+	 			if (item) {
+					item.className='unhidden';
+					if (divID == 'knownactives'){
+						b.className = 'hidden';
+					}
+					else {
+						a.className = 'hidden';
+					}
+	 			}
+ 			}
+ 	</script>
+	<!-- Include the Google Maps API library - required for embedding maps -->
+	<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	 
+	<script type="text/javascript">
+	 
+	// The latitude and longitude of your business / place
+	var position = {{ latlong }};
+	 
+	function showGoogleMaps() {
+	 
+		var latLng = new google.maps.LatLng(position[0], position[1]);
+	 
+		var mapOptions = {
+			zoom: 16, // initialize zoom level - the max value is 21
+			streetViewControl: false, // hide the yellow Street View pegman
+			scaleControl: true, // allow users to zoom the Google Map
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: latLng
+		};
+	 
+		map = new google.maps.Map(document.getElementById('googlemaps'),
+			mapOptions);
+	 
+		// Show the default red marker at the location
+		marker = new google.maps.Marker({
+			position: latLng,
+			map: map,
+			draggable: false,
+			animation: google.maps.Animation.DROP
+		});
+	}
+	 
+	google.maps.event.addDomListener(window, 'load', showGoogleMaps);
+	</script>
+    </head>
+<body>
+
+<div id="googlewraps"><div id="googlemaps"></div></div>
+<div id="content">
+<h1>Welcome to Walking Distance</h1>
+ 
+<p>Walking Distance helps to find a hotel room that's near the things you want to do. So why not get started by telling us some of the activities you want to get up to on your trip, and we'll have a look to see if we can find you somewhere to stay!</p>
+
+</div>
+<div id="content">
+<form action="." method="post">
+<legend><span class="number">1</span>What do you like to do?</legend>
+  <a href="javascript:unhide('knownactives');">I know what I want to do</a><br>
+  <a href="javascript:unhide('activeideas');">Give me some ideas</a><br><br>
+  <div id="activeideas" class="unhidden">
+  <table style="width:100%"><tr><td>
+  <input type="checkbox" name="formActivity" value="amusement_park">Amusement Parks</td><td>
+  <input type="checkbox" name="formActivity" value="aquarium">Aquariums</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="art_gallery">Art Galleries</td><td>
+  <input type="checkbox" name="formActivity" value="bar">Bars</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="cafe">Cafes</td><td>
+  <input type="checkbox" name="formActivity" value="casino">Casinos</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="department_store">Department Stores</td><td>
+  <input type="checkbox" name="formActivity" value="museum">Museums</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="night_club">Night Clubs</td><td>
+  <input type="checkbox" name="formActivity" value="park">Parks</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="restaurant">Restaurants</td><td>
+  <input type="checkbox" name="formActivity" value="shopping_mall">Shopping Malls</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="spa">Spas</td><td>
+  <input type="checkbox" name="formActivity" value="stadium">Stadiums</td></tr><tr><td>
+  <input type="checkbox" name="formActivity" value="zoo">Zoos</td><td></td></tr></table>
+  </div>
+  <div id="knownactives" class="hidden">
+  <input type="text" name="active1">
+  <input type="text" name="active2">
+  <input type="text" name="active3">
+  <input type="text" name="active4">
+  <input type="text" name="active5">
+  </div>
+  <br>
+
+<legend><span class="number">2</span>Where are you Going?</legend> 
+  <input type="text" name="destination">
+
+<center><input type="submit"></center>
+</form>
+</div>
+
+</body>
+</html>

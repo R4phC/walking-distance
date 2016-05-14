@@ -1,0 +1,70 @@
+<html>
+<head><title>Results</title>      
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/normalize.css') }}">
+	<link href='http://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="{{ url_for('static',filename='css/style2.css') }}">
+    
+		<script src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	 
+	<script type="text/javascript">
+	 
+	// The latitude and longitude of your business / place
+	var position = {{ results[0].latlong }};
+	 
+	function showGoogleMaps() {
+	 
+		var latLng = new google.maps.LatLng(position[0], position[1]);
+	 
+		var mapOptions = {
+			zoom: 16, // initialize zoom level - the max value is 21
+			streetViewControl: false, // hide the yellow Street View pegman
+			scaleControl: true, // allow users to zoom the Google Map
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: latLng
+		};
+	 
+		map = new google.maps.Map(document.getElementById('googlemaps'),
+			mapOptions);
+	 
+		// Show the default red marker at the location
+		{% for result in results %}
+		position = {{ result.latlong }};
+		latLng = new google.maps.LatLng(position[0], position[1]);
+		marker{{ result.num }} = new google.maps.Marker({
+			position: latLng,
+			map: map,
+			draggable: false,
+			title: '{{ result.hotel }}'
+		});
+		{% endfor %}
+	}
+	 
+	google.maps.event.addDomListener(window, 'load', showGoogleMaps);
+	</script>
+	
+	</head>
+<body>
+<div id="googlewraps"><div id="googlemaps"></div></div>
+<div id="content"><h1>Results:</h1></div>
+<div id="content"><table style="width:100%">
+	{% for result in results %}
+	<tr>
+		<td>
+			<span class="number">{{ result.num }}</span>
+		</td>
+		<td>
+			{{ result.hotel }}
+		</td>
+		<td>
+			{% for attraction in result.attractions %}
+			{{ attraction.name }} - {{ attraction.dist }} metres<br>
+			{% endfor %}
+		</td>
+	</tr>
+	{% endfor %}
+</table></div>
+
+</body>
+</html>
