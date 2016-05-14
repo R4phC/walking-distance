@@ -3,8 +3,14 @@ from googleplaces import GooglePlaces
 from geopy.distance import vincenty
 import random
 import os
+import logging
+import sys
 
 application = Flask(__name__)
+
+application.logger.addHandler(logging.StreamHandler(sys.stdout))
+application.logger.setLevel(logging.ERROR)
+
 
 @application.route('/favicon.ico')
 def favicon():
@@ -55,7 +61,7 @@ def my_form_post():
                     
 def backend(destination,activities,knownactivities):
     
-    google_places = GooglePlaces(GOOG_PLA_API_KEY)
+    google_places = GooglePlaces(API_KEY)
     
     spot = google_places.autocomplete(destination)
     destination = spot.predictions[0].description
@@ -133,4 +139,5 @@ def backend(destination,activities,knownactivities):
 if __name__ == "__main__":
     # Bind to PORT if defined, otherwise default to 5000.
     port = int(os.environ.get('PORT', 5000))
+    API_KEY = os.environ.get('GOOG_PLA_API_KEY','')
     application.run(host='0.0.0.0', port=port)
