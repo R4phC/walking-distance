@@ -55,9 +55,7 @@ def my_form_post():
                     
 def backend(destination,activities,knownactivities):
     
-    YOUR_API_KEY = '...'
-    
-    google_places = GooglePlaces(YOUR_API_KEY)
+    google_places = GooglePlaces(GOOG_PLA_API_KEY)
     
     spot = google_places.autocomplete(destination)
     destination = spot.predictions[0].description
