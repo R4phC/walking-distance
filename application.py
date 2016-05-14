@@ -28,8 +28,9 @@ def my_form():
                  [27.6933002,85.3225021],[37.9928017,23.7695007],[47.513031,19.1229801],
                  [-45.0317993,168.6640015],[22.3361568,114.1869659],[25.2873306,55.3206406],
                  [-33.8740005,151.2030029]]
-                 
-    return render_template("index.html",latlong = random.choice(locations))
+    API_KEY = os.environ.get('GOOG_MAP_API_KEY','')     
+
+    return render_template("index.html",latlong = random.choice(locations),apikey=API_KEY)
 
 @application.route('/', methods=['POST'])
 def my_form_post():
@@ -57,7 +58,8 @@ def my_form_post():
                                                'latlong': '['+str(attraction[2])+','+str(attraction[3])+']', 
                                                'dist': int(attraction[1])})
         
-    return render_template("result.html", results = results)
+    API_KEY = os.environ.get('GOOG_MAP_API_KEY','')    
+    return render_template("result.html", results = results,apikey=API_KEY)
                     
 def backend(destination,activities,knownactivities):
     
